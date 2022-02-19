@@ -643,6 +643,7 @@ def add_comment(request):
 @login_required(redirect_field_name="", login_url="/403")
 @transaction.atomic
 def delete_comment(request):
+    """delete a comment."""
     comment_id = request.POST.get("comment_id", None)
     comment = get_object_or_404(Comment, pk=comment_id)
     if comment.author != request.user:
@@ -661,7 +662,7 @@ def delete_comment(request):
 @login_required(redirect_field_name="", login_url="/403")
 @transaction.atomic
 def update_comment(request):
-    """Add a comment."""
+    """update comment's content."""
     form = forms.UpdateCommentForm(request.POST)
     if not form.is_valid():
         return JsonResponse(
