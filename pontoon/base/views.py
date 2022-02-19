@@ -657,6 +657,34 @@ def delete_comment(request):
     return JsonResponse({"status": True})
 
 
+@utils.require_AJAX
+@login_required(redirect_field_name="", login_url="/403")
+@transaction.atomic
+def update_comment(request):
+    """Add a comment."""
+    form = forms.UpdateCommentForm(request.POST)
+    if not form.is_valid():
+        return JsonResponse(
+            {
+                "status": False,
+                "message": "{error}".format(
+                    error=form.errors.as_json(escape_html=True)
+                ),
+            },
+            status=400,
+        )
+    comment = get_object_or_404(Comment, pk=form.cleaned_data["comment_id"])
+    if comment.author != request.user:
+        return JsonResponse({"status": False, "message": "Permission Denied"}, status=403)
+    comment.content = form.cleaned_data["comment"]
+    comment.save()
+    log_action(
+        ActionLog.ActionType.COMMENT_UPDATED, request.user,
+        entity=comment.entity, locale=comment.locale,
+    )
+    return JsonResponse({"status": True})
+
+
 @login_required(redirect_field_name="", login_url="/403")
 @require_POST
 @transaction.atomic

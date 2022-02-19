@@ -299,6 +299,14 @@ class GetEntitiesForm(forms.Form):
         return utils.split_ints(self.cleaned_data["entity_ids"])
 
 
+class UpdateCommentForm(forms.Form):
+    """
+    Form for parameters to the `update_comment` view.
+    """
+    comment = HtmlField()
+    comment_id = forms.IntegerField(required=True)
+
+
 class AddCommentForm(forms.Form):
     """
     Form for parameters to the `add_comment` view.
