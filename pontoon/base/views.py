@@ -647,13 +647,17 @@ def delete_comment(request):
     comment_id = request.POST.get("comment_id", None)
     comment = get_object_or_404(Comment, pk=comment_id)
     if comment.author != request.user:
-        return JsonResponse({"status": False, "message": "Permission Denied"}, status=403)
+        return JsonResponse(
+            {"status": False, "message": "Permission Denied"}, status=403
+        )
     entity = comment.entity
     locale = comment.locale
     comment.delete()
     log_action(
-        ActionLog.ActionType.COMMENT_DELETED, request.user,
-        entity=entity, locale=locale,
+        ActionLog.ActionType.COMMENT_DELETED,
+        request.user,
+        entity=entity,
+        locale=locale,
     )
     return JsonResponse({"status": True})
 
@@ -676,12 +680,16 @@ def update_comment(request):
         )
     comment = get_object_or_404(Comment, pk=form.cleaned_data["comment_id"])
     if comment.author != request.user:
-        return JsonResponse({"status": False, "message": "Permission Denied"}, status=403)
+        return JsonResponse(
+            {"status": False, "message": "Permission Denied"}, status=403
+        )
     comment.content = form.cleaned_data["comment"]
     comment.save()
     log_action(
-        ActionLog.ActionType.COMMENT_UPDATED, request.user,
-        entity=comment.entity, locale=comment.locale,
+        ActionLog.ActionType.COMMENT_UPDATED,
+        request.user,
+        entity=comment.entity,
+        locale=comment.locale,
     )
     return JsonResponse({"status": True})
 

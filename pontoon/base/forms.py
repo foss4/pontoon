@@ -303,6 +303,7 @@ class UpdateCommentForm(forms.Form):
     """
     Form for parameters to the `update_comment` view.
     """
+
     comment = HtmlField()
     comment_id = forms.IntegerField(required=True)
 
