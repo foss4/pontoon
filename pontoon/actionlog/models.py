@@ -18,6 +18,10 @@ class ActionLog(models.Model):
         TRANSLATION_UNREJECTED = "translation:unrejected", "Translation unrejected"
         # A comment has been added.
         COMMENT_ADDED = "comment:added", "Comment added"
+        # A comment has been deleted.
+        COMMENT_DELETED = "comment:deleted", "Comment deleted"
+        # A comment has been updated.
+        COMMENT_UPDATED = "comment:updated", "Comment updated"
 
     action_type = models.CharField(max_length=50, choices=ActionType.choices)
     created_at = models.DateTimeField(auto_now_add=True)
