@@ -73,6 +73,11 @@ urlpatterns = [
         name="pontoon.add_comment",
     ),
     path(
+        "delete-comment/",
+        views.delete_comment,
+        name="pontoon.delete_comment",
+    ),
+    path(
         "pin-comment/",
         views.pin_comment,
         name="pontoon.pin_comment",
